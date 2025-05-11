@@ -8,7 +8,16 @@ from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Permitir peticiones desde React (localhost:3000)
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "http://localhost:3000",
+            "http://localhost:5173",
+            "https://sales-predictor-pmv-two.vercel.app"
+        ]
+    }
+})
+
 
 @app.route('/')
 def home():

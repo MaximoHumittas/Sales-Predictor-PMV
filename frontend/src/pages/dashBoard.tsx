@@ -40,26 +40,41 @@ const Dashboard = () => {
     }
   };
   
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const handlePrediccionMensual = async (mes: string) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/prediccion-mensual?mes=${mes}`);
+      const res = await axios.get(
+        `${apiUrl}/prediccion-mensual?mes=${mes}`
+      );
       const { predicciones } = res.data;
   
       const plotRes = await axios.post(
-        'http://localhost:5000/plot',
-        { features: predicciones, producto: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}` },
+        `${apiUrl}/plot`,
+        {
+          features: predicciones,
+          producto: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`
+        },
         { responseType: 'blob' }
       );
   
       const url = URL.createObjectURL(plotRes.data);
-      setGraficas(prev => [...prev, { nombre: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`, url }]);
+      setGraficas(prev => [
+        ...prev,
+        {
+          nombre: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`,
+          url
+        }
+      ]);
     } catch (error) {
       console.error(`Error al obtener predicción de ${mes}:`, error);
     } finally {
       setLoading(false);
     }
   };
+  
+  
   
 
   return (
