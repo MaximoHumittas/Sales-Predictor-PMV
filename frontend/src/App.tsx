@@ -1,24 +1,48 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Home from './pages/Home';
-import Dashboard from './pages/DashBoard';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './context/PrivateRoute';
+
+import Home from './pages/home';
+import Dashboard from './pages/dashBoard';
+import About from './pages/about';
+import Profile from './pages/profile';
+import Login from './pages/login';
 import Navbar from './components/NavBar/NavBar';
+
 
 function App() {
 
   return (
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/about' element={<About />} />
 
-    <Router>
+          <Route path='/login' element={<Login />} />
 
-      <Navbar />
-
-      <Routes>
-        <Route path='/' element={<Home />}/>
-        <Route path='/' element={<Dashboard />}/>
-
-      </Routes>
-
-    </Router>
+          {/* Rutas protegidas */}
+          <Route
+            path='/dashboard'
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/profile'
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   )
 }
 

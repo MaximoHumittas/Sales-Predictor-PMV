@@ -1,16 +1,54 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar: React.FC = () => {
+
+  const { user, logout } = useAuth();
+
+
   return (
-    <nav className="bg-blue-600 p-4 shadow-md">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-white text-2xl font-semibold">Sales Predictor</h1>
-        <div className="space-x-4">
-          <Link to="/" className="text-white hover:text-blue-200 transition">Inicio</Link>
-          <Link to="/dashboard" className="text-white hover:text-blue-200 transition">Dashboard</Link>
-        </div>
+    <nav >
+      <div>
+        <h1>Sales Predictor</h1>
       </div>
+      <ul >
+        <li >
+          <Link to="/" >Inicio</Link>
+        </li>
+        {user ? (
+          <>
+            <li >
+              <Link to="/dashboard" >Panel de control</Link>
+            </li>
+
+            <li >
+              <Link to="/about">Sobre nosotros</Link>
+            </li>
+
+
+            <li >
+              <Link to="/profile">Usuario</Link>
+            </li>
+
+            <li>
+              <button onClick={logout}>
+                Cerrar sesión
+              </button>
+            </li>
+
+          </>
+          
+        ) : (
+          <>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+          </>
+        )}
+
+
+      </ul>
     </nav>
   );
 };
