@@ -1,0 +1,247 @@
+/*========================================
+  Hoja de estilos para componentes UI
+  Empresa: Análisis de ventas futuras
+========================================*/
+
+/* Variables de colores y espaciado */
+:root {
+    --color-primario: #1e3a8a;
+    --color-secundario: #10b981;
+    --color-fondo: #f9fafb;
+    --color-texto: #111827;
+    --radio-bordes: 0.5rem;
+    --sombra-suave: 0 2px 8px rgba(0,0,0,0.1);
+    --espaciado: 1rem;
+  }
+  
+  /* Contenedor de tarjetas en grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--espaciado);
+    padding: var(--espaciado);
+  }
+  
+  /* Componente Card */
+  .card {
+    background-color: #fff;
+    border-radius: var(--radio-bordes);
+    box-shadow: var(--sombra-suave);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .card__image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+  }
+  
+  .card__body {
+    padding: calc(var(--espaciado) * 0.75);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card__title {
+    font-size: 1.25rem;
+    color: var(--color-primario);
+    margin-bottom: 0.5rem;
+  }
+  
+  .card__text {
+    font-size: 1rem;
+    color: var(--color-texto);
+    flex: 1;
+    margin-bottom: 1rem;
+  }
+  
+  .card__button {
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-secundario);
+    color: #fff;
+    border: none;
+    border-radius: var(--radio-bordes);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+  .card__button:hover {
+    background-color: #059669;
+  }
+  
+  /* Componente Info Box para estadísticas */
+  .info-box {
+    background-color: var(--color-primario);
+    color: #fff;
+    border-radius: var(--radio-bordes);
+    padding: var(--espaciado);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .info-box__icon {
+    font-size: 1.5rem;
+  }
+  .info-box__content {
+    display: flex;
+    flex-direction: column;
+  }
+  .info-box__label {
+    font-size: 0.875rem;
+  }
+  .info-box__value {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  /* Botones globales */
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radio-bordes);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .btn--primario {
+    background-color: var(--color-primario);
+    color: #fff;
+  }
+  .btn--primario:hover {
+    background-color: #162f6a;
+  }
+  .btn--secundario {
+    background-color: var(--color-secundario);
+    color: #fff;
+  }
+  .btn--secundario:hover {
+    background-color: #059669;
+  }
+  
+  /* Contenedor de gráficas */
+  .chart-container {
+    background-color: #fff;
+    border-radius: var(--radio-bordes);
+    box-shadow: var(--sombra-suave);
+    padding: var(--espaciado);
+    margin: var(--espaciado) 0;
+  }
+  .chart-container__title {
+    font-size: 1.125rem;
+    color: var(--color-texto);
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: var(--color-primario);
+    color: #fff;
+    padding: var(--espaciado);
+  }
+  .footer__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer__nav {
+    display: flex;
+    gap: 1rem;
+  }
+  .footer__nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: opacity 0.2s ease;
+  }
+  .footer__nav a:hover {
+    opacity: 0.75;
+  }
+  
+  /* Responsive */
+  @media (max-width: 480px) {
+    .card__image {
+      height: 120px;
+    }
+    .card__title {
+      font-size: 1.125rem;
+    }
+    .footer__content {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+  
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-primario);
+    padding: var(--espaciado) var(--espaciado);
+  }
+  
+  .navbar__brand h1 {
+    color: #fff;
+    font-size: 1.5rem;
+  }
+  
+  .navbar__menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: var(--espaciado);
+  }
+  
+  .navbar__item {
+  }
+  
+  .navbar__link,
+  .navbar__button {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  
+  .navbar__link:hover,
+  .navbar__button:hover {
+    opacity: 0.8;
+  }
+  
+  .navbar__button {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #fff;
+    border-radius: var(--radio-bordes);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      gap: var(--espaciado);
+    }
+    .navbar__menu {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  

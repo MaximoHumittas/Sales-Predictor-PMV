@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import Footer from '../components/Footer';
+import './Profile.css';
+
 
 
 interface User {
@@ -30,25 +33,29 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Mi Perfil</h1>
-      {user ? (
+    <>
 
-          <div>
-            <img src={user.photoUrl} alt="Foto de perfil"/>
-            <p><strong>Nombre:</strong> {user.name}</p>
-            <p><strong>Correo:</strong> {user.email}</p>
-            <p><strong>Empresa:</strong> {user.company}</p>
-            <p><strong>Teléfono:</strong> {user.phone}</p>
-            <button onClick={handleEditProfile}>
+      <main className="profile">
+        <h1 className="profile__title">Mi Perfil</h1>
+        {user ? (
+          <div className="profile__card">
+            <img src={user.photoUrl} alt="Foto de perfil" className="profile__photo" />
+            <div className="profile__info">
+              <p><strong>Nombre:</strong> {user.name}</p>
+              <p><strong>Correo:</strong> {user.email}</p>
+              <p><strong>Empresa:</strong> {user.company}</p>
+              <p><strong>Teléfono:</strong> {user.phone}</p>
+            </div>
+            <button className="profile__button" onClick={handleEditProfile}>
               Editar Perfil
             </button>
           </div>
-
-      ) : (
-        <p>Cargando perfil...</p>
-      )}
-    </div>
+        ) : (
+          <p className="profile__loading">Cargando perfil...</p>
+        )}
+      </main>
+      <Footer />
+    </>
   );
 };
 

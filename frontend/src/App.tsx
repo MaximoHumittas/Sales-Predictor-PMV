@@ -8,7 +8,7 @@ import Dashboard from './pages/dashBoard';
 import About from './pages/about';
 import Profile from './pages/profile';
 import Login from './pages/login';
-import Navbar from './components/NavBar/NavBar';
+import Navbar from './components/NavBar';
 
 
 function App() {

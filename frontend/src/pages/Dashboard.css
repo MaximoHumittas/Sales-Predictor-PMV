@@ -1,0 +1,103 @@
+/* src/pages/Dashboard.css */
+
+.dashboard {
+    padding: var(--espaciado);
+    font-family: Arial, sans-serif;
+    background-color: var(--color-fondo);
+    min-height: calc(100vh - 8rem); /* Ajusta según Navbar + Footer */
+  }
+  
+  .dashboard__title {
+    font-size: 2rem;
+    color: var(--color-primario);
+    margin-bottom: var(--espaciado);
+    text-align: center;
+  }
+  
+  .dashboard__form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--espaciado);
+    margin-bottom: var(--espaciado);
+  }
+  
+  .dashboard__input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: var(--radio-bordes);
+    flex: 1 1 200px;
+    min-width: 150px;
+  }
+  
+  .dashboard__button {
+    padding: 0.5rem 1rem;
+    background-color: var(--color-secundario);
+    color: #fff;
+    border: none;
+    border-radius: var(--radio-bordes);
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+  .dashboard__button:hover {
+    background-color: #059669;
+  }
+  
+  .dashboard__monthly {
+    margin-bottom: var(--espaciado);
+    text-align: center;
+  }
+  .dashboard__monthly-button {
+    margin: 0.25rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--color-primario);
+    background: none;
+    color: var(--color-primario);
+    border-radius: var(--radio-bordes);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .dashboard__monthly-button:hover {
+    background-color: var(--color-primario);
+    color: #fff;
+  }
+  
+  .dashboard__loading {
+    margin-top: var(--espaciado);
+    color: var(--color-primario);
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .dashboard__graphs {
+    margin-top: calc(var(--espaciado) * 2);
+  }
+  .dashboard__graph {
+    margin-bottom: calc(var(--espaciado) * 2);
+  }
+  .dashboard__graph-title {
+    font-weight: bold;
+    margin-bottom: calc(var(--espaciado) / 2);
+  }
+  .dashboard__graph img {
+    width: 500px;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radio-bordes);
+    box-shadow: var(--sombra-suave);
+    display: block;
+    margin: 0 auto;
+  }
+  
+  /* Responsive */
+  @media (max-width: 480px) {
+    .dashboard__form {
+      flex-direction: column;
+    }
+    .dashboard__monthly-button {
+      width: 100%;
+      max-width: 200px;
+    }
+  }
+  

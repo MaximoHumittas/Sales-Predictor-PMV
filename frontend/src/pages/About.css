@@ -1,0 +1,35 @@
+/* src/pages/About.css */
+
+.about {
+    padding: var(--espaciado);
+    background-color: var(--color-fondo);
+    min-height: calc(100vh - 8rem); /* Altura considerando Navbar + Footer */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .about__title {
+    font-size: 2rem;
+    color: var(--color-primario);
+    margin-bottom: calc(var(--espaciado) * 0.5);
+  }
+  
+  .about__text {
+    max-width: 800px;
+    font-size: 1rem;
+    color: var(--color-texto);
+    line-height: 1.6;
+    margin-bottom: var(--espaciado);
+  }
+  
+  @media (max-width: 480px) {
+    .about__title {
+      font-size: 1.5rem;
+    }
+    .about__text {
+      font-size: 0.9rem;
+    }
+  }
+  

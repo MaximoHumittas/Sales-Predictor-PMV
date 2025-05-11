@@ -1,0 +1,70 @@
+/* src/pages/Profile.css */
+
+.profile {
+    padding: var(--espaciado);
+    background-color: var(--color-fondo);
+    min-height: calc(100vh - 8rem); /* Ajusta según Navbar + Footer */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile__title {
+    font-size: 2rem;
+    color: var(--color-primario);
+    margin-bottom: var(--espaciado);
+  }
+  
+  .profile__card {
+    background-color: #fff;
+    border-radius: var(--radio-bordes);
+    box-shadow: var(--sombra-suave);
+    padding: var(--espaciado);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .profile__photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: var(--espaciado);
+  }
+  
+  .profile__info p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: var(--color-texto);
+  }
+  
+  .profile__button {
+    padding: 0.5rem 1rem;
+    background-color: var(--color-secundario);
+    color: #fff;
+    border: none;
+    border-radius: var(--radio-bordes);
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+  .profile__button:hover {
+    background-color: #059669;
+  }
+  
+  .profile__loading {
+    font-size: 1rem;
+    color: var(--color-primario);
+    margin-top: var(--espaciado);
+  }
+  
+  @media (max-width: 480px) {
+    .profile__title {
+      font-size: 1.5rem;
+    }
+    .profile__card {
+      padding: calc(var(--espaciado) / 2);
+    }
+  }
+  

@@ -1,0 +1,46 @@
+/* src/pages/Home.css */
+
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: var(--color-fondo);
+    padding: var(--espaciado);
+    /* Ajusta la altura total restando aproximadamente la altura de Navbar y Footer */
+    min-height: calc(100vh - 8rem);
+  }
+  
+  .home__menu {
+    width: 100%;
+    max-width: 1200px;
+    display: grid;
+    /* Ajusta columnas según ancho disponible */
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--espaciado);
+    margin-top: var(--espaciado);
+  }
+  
+  /* Puedes ajustar la altura de las cards si quieres uniformidad */
+  .home__menu .card {
+    height: 100%;
+  }
+  
+  /* Titular auxiliar si lo añades */
+  .home__title {
+    font-size: 2rem;
+    color: var(--color-primario);
+    margin-bottom: var(--espaciado);
+  }
+  
+  /* Responsivo para móviles */
+  @media (max-width: 480px) {
+    .home {
+      padding: calc(var(--espaciado) / 2);
+    }
+    .home__menu {
+      grid-template-columns: 1fr;
+      gap: calc(var(--espaciado) / 2);
+    }
+  }
+  
