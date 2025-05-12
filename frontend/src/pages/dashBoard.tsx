@@ -9,12 +9,13 @@ type Grafica = {
 };
 
 const Dashboard = () => {
-
   const [producto, setProducto] = useState('');
   const [graficas, setGraficas] = useState<Grafica[]>([]);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState('37.45,11.57,78.40');
 
+  // Usamos siempre la misma base URL definida en Vite
+  const apiUrl = import.meta.env.VITE_API_URL; // ej. 'http://localhost:5000'
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,13 +25,13 @@ const Dashboard = () => {
         .split(',')
         .map(x => parseFloat(x.trim()))
         .filter(x => !isNaN(x));
-  
+
       const res = await axios.post(
-        'http://localhost:5000/plot',
+        `${apiUrl}/plot`,
         { features, producto },
         { responseType: 'blob' }
       );
-  
+
       const url = URL.createObjectURL(res.data);
       setGraficas(prev => [...prev, { nombre: producto, url }]);
     } catch (error) {
@@ -39,8 +40,6 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
-  
-  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handlePrediccionMensual = async (mes: string) => {
     setLoading(true);
@@ -49,7 +48,7 @@ const Dashboard = () => {
         `${apiUrl}/prediccion-mensual?mes=${mes}`
       );
       const { predicciones } = res.data;
-  
+
       const plotRes = await axios.post(
         `${apiUrl}/plot`,
         {
@@ -58,14 +57,11 @@ const Dashboard = () => {
         },
         { responseType: 'blob' }
       );
-  
+
       const url = URL.createObjectURL(plotRes.data);
       setGraficas(prev => [
         ...prev,
-        {
-          nombre: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`,
-          url
-        }
+        { nombre: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`, url }
       ]);
     } catch (error) {
       console.error(`Error al obtener predicción de ${mes}:`, error);
@@ -73,9 +69,6 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
-  
-  
-  
 
   return (
     <>
@@ -104,7 +97,7 @@ const Dashboard = () => {
 
         <div className="dashboard__monthly">
           <h3>Ver predicción mensual</h3>
-          {['junio', 'julio', /* ... */].map(mes => (
+          {['junio', 'julio' /* … */].map(mes => (
             <button
               key={mes}
               onClick={() => handlePrediccionMensual(mes)}
@@ -115,15 +108,13 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {loading && (
-          <div className="dashboard__loading">⏳ Cargando gráfica...</div>
-        )}
+        {loading && <div className="dashboard__loading">⏳ Cargando gráfica...</div>}
 
         {graficas.length > 0 && !loading && (
           <div className="dashboard__graphs">
             <h3>Gráficas generadas:</h3>
-            {graficas.map((graf, index) => (
-              <div key={index} className="dashboard__graph">
+            {graficas.map((graf, i) => (
+              <div key={i} className="dashboard__graph">
                 <div className="dashboard__graph-title">{graf.nombre}</div>
                 <img src={graf.url} alt={`Gráfica ${graf.nombre}`} />
               </div>
