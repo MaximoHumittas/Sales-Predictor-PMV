@@ -9,15 +9,7 @@ from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={
-    r"/*": {
-        "origins": [
-            "http://localhost:3000",
-            "http://localhost:5173",
-            "https://sales-predictor-pmv-two.vercel.app"
-        ]
-    }
-})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 @app.route('/')
