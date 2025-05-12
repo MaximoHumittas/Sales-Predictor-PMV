@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-
 import Footer from '../components/Footer';
 import './Login.css';
 
@@ -10,22 +9,16 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     setEmail('juanito@mock.com');
     setPassword('123456');
   }, []);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      login(email, password);
-      navigate('/dashboard');
-    } catch (error: any) {
-      console.error('Error al iniciar sesión:', error);
-      setErrorMessage(error.message || 'Error desconocido');
-    }
+    login(email, password);
+    navigate('/dashboard');
   };
 
   return (
@@ -39,9 +32,8 @@ const Login: React.FC = () => {
             <input
               type="email"
               className="login__input"
-              placeholder="correo@example.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               required
             />
           </div>
@@ -51,18 +43,15 @@ const Login: React.FC = () => {
             <input
               type="password"
               className="login__input"
-              placeholder="Contraseña"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               required
             />
           </div>
 
-          {errorMessage && (
-            <div className="login__error">{errorMessage}</div>
-          )}
-
-          <button type="submit" className="login__button">Entrar</button>
+          <button type="submit" className="login__button">
+            Entrar
+          </button>
         </form>
       </main>
       <Footer />
