@@ -1,5 +1,6 @@
 import React from 'react';
 import './components.css';
+import { Link } from 'react-router-dom';
 
 export interface CardProps {
   imageUrl: string;
@@ -25,7 +26,7 @@ const Card: React.FC<CardProps> = ({
       <p className="card__text">{text}</p>
       {buttonText && (
         buttonLink ? (
-          <a href={buttonLink} className="card__button">{buttonText}</a>
+          <Link to={buttonLink} className="card__button">{buttonText}</Link>
         ) : (
           <button className="card__button" onClick={onButtonClick}>{buttonText}</button>
         )
