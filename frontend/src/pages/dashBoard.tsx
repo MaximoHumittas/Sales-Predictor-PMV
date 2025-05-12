@@ -3,21 +3,19 @@ import axios from 'axios';
 import Footer from '../components/Footer';
 import './Dashboard.css';
 
-type Grafica = {
-  nombre: string;
-  url: string;
-};
+type Grafica = { nombre: string; url: string };
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const [producto, setProducto] = useState('');
+  const [input, setInput] = useState('37.45,11.57,78.40');
   const [graficas, setGraficas] = useState<Grafica[]>([]);
   const [loading, setLoading] = useState(false);
-  const [input, setInput] = useState('37.45,11.57,78.40');
 
-  // Usamos siempre la misma base URL definida en Vite
-  const apiUrl = import.meta.env.VITE_API_URL; // ej. 'http://localhost:5000'
+  // En desarrollo el proxy de Vite se encarga de dirigir '/plot' y '/prediccion-mensual'
+  // En producción, import.meta.env.VITE_API_URL apunta a tu backend en Render
+  const apiUrl = import.meta.env.VITE_API_URL as string;
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -26,8 +24,10 @@ const Dashboard = () => {
         .map(x => parseFloat(x.trim()))
         .filter(x => !isNaN(x));
 
+      // En dev: llama a '/plot' que Vite proxea; en prod: llama a `${apiUrl}/plot`
+      const urlBase = import.meta.env.DEV ? '' : apiUrl;
       const res = await axios.post(
-        `${apiUrl}/plot`,
+        `${urlBase}/plot`,
         { features, producto },
         { responseType: 'blob' }
       );
@@ -44,13 +44,14 @@ const Dashboard = () => {
   const handlePrediccionMensual = async (mes: string) => {
     setLoading(true);
     try {
+      const urlBase = import.meta.env.DEV ? '' : apiUrl;
       const res = await axios.get(
-        `${apiUrl}/prediccion-mensual?mes=${mes}`
+        `${urlBase}/prediccion-mensual?mes=${mes}`
       );
       const { predicciones } = res.data;
 
       const plotRes = await axios.post(
-        `${apiUrl}/plot`,
+        `${urlBase}/plot`,
         {
           features: predicciones,
           producto: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`
@@ -61,7 +62,10 @@ const Dashboard = () => {
       const url = URL.createObjectURL(plotRes.data);
       setGraficas(prev => [
         ...prev,
-        { nombre: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`, url }
+        {
+          nombre: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`,
+          url
+        }
       ]);
     } catch (error) {
       console.error(`Error al obtener predicción de ${mes}:`, error);

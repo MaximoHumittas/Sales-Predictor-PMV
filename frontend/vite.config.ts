@@ -2,17 +2,17 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-  // Carga las variables de entorno (incluyendo VITE_API_URL)
+  // carga .env, .env.local, .env.[mode], .env.[mode].local
   const env = loadEnv(mode, process.cwd(), '');
   const apiUrl = env.VITE_API_URL;
 
   return {
     plugins: [
-      react()       // aquí importas y ejecutas el plugin
+      react()
     ],
     server: {
       proxy: {
-        // cualquier llamada a /plot se redirige a tu backend
+        // proxy de desarrollo: redirige /plot y /prediccion-mensual a tu Flask
         '/plot': {
           target: apiUrl,
           changeOrigin: true,
