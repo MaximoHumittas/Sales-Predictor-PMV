@@ -11,9 +11,20 @@ const Dashboard: React.FC = () => {
   const [graficas, setGraficas] = useState<Grafica[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // En desarrollo el proxy de Vite se encarga de dirigir '/plot' y '/prediccion-mensual'
-  // En producción, import.meta.env.VITE_API_URL apunta a tu backend en Render
-  const apiUrl = import.meta.env.VITE_API_URL as string;
+  // Si import.meta.env.VITE_API_URL no está definido (por ejemplo, olvidaste configurarlo
+  // en Vercel), cae al fallback literal:
+  const apiUrl =
+    (import.meta.env.VITE_API_URL as string) ||
+    'https://sales-predictor-pmv.onrender.com';
+
+  const hacerPlot = async (features: number[], nombre: string) => {
+    const res = await axios.post(
+      `${apiUrl}/plot`,
+      { features, producto: nombre },
+      { responseType: 'blob' }
+    );
+    return URL.createObjectURL(res.data);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,18 +35,10 @@ const Dashboard: React.FC = () => {
         .map(x => parseFloat(x.trim()))
         .filter(x => !isNaN(x));
 
-      // En dev: llama a '/plot' que Vite proxea; en prod: llama a `${apiUrl}/plot`
-      const urlBase = import.meta.env.DEV ? '' : apiUrl;
-      const res = await axios.post(
-        `${urlBase}/plot`,
-        { features, producto },
-        { responseType: 'blob' }
-      );
-
-      const url = URL.createObjectURL(res.data);
-      setGraficas(prev => [...prev, { nombre: producto, url }]);
-    } catch (error) {
-      console.error('Error al generar gráfica:', error);
+      const url = await hacerPlot(features, producto || 'Producto');
+      setGraficas(prev => [...prev, { nombre: producto || 'Producto', url }]);
+    } catch (err) {
+      console.error('Error al generar gráfica:', err);
     } finally {
       setLoading(false);
     }
@@ -44,31 +47,20 @@ const Dashboard: React.FC = () => {
   const handlePrediccionMensual = async (mes: string) => {
     setLoading(true);
     try {
-      const urlBase = import.meta.env.DEV ? '' : apiUrl;
-      const res = await axios.get(
-        `${urlBase}/prediccion-mensual?mes=${mes}`
-      );
-      const { predicciones } = res.data;
-
-      const plotRes = await axios.post(
-        `${urlBase}/plot`,
-        {
-          features: predicciones,
-          producto: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`
-        },
-        { responseType: 'blob' }
+      const { data } = await axios.get<{ predicciones: number[] }>(
+        `${apiUrl}/prediccion-mensual?mes=${mes}`
       );
 
-      const url = URL.createObjectURL(plotRes.data);
+      const url = await hacerPlot(
+        data.predicciones,
+        `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`
+      );
       setGraficas(prev => [
         ...prev,
-        {
-          nombre: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`,
-          url
-        }
+        { nombre: `Predicción ${mes.charAt(0).toUpperCase() + mes.slice(1)}`, url }
       ]);
-    } catch (error) {
-      console.error(`Error al obtener predicción de ${mes}:`, error);
+    } catch (err) {
+      console.error(`Error al obtener predicción de ${mes}:`, err);
     } finally {
       setLoading(false);
     }
