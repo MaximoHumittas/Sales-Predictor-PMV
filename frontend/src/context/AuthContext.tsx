@@ -17,13 +17,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const login = (email: string, password: string) => {
-    // Aquí iría la lógica de autenticación, por ejemplo:
-    // Verificar email y password, y si es correcto, autenticar al usuario.
-    // En este caso solo estamos simulando el login:
     if (email === 'juanito@mock.com' && password === '123456') {
       setUser({ name: 'Juanito', email });
     } else {
-      console.log('Credenciales incorrectas');
+      throw new Error('Credenciales incorrectas');
     }
   };
 

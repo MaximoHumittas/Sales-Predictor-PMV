@@ -10,6 +10,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     setEmail('juanito@mock.com');
@@ -21,8 +22,9 @@ const Login: React.FC = () => {
     try {
       login(email, password);
       navigate('/dashboard');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error al iniciar sesión:', error);
+      setErrorMessage(error.message || 'Error desconocido');
     }
   };
 
@@ -55,6 +57,10 @@ const Login: React.FC = () => {
               required
             />
           </div>
+
+          {errorMessage && (
+            <div className="login__error">{errorMessage}</div>
+          )}
 
           <button type="submit" className="login__button">Entrar</button>
         </form>
