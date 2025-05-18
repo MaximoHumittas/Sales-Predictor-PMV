@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import team1 from '../assets/persona1.jpeg';
 import team2 from '../assets/persona2.jpeg';
 import team3 from '../assets/persona3.jpeg';
+
 import './About.css';
 
 const team = [
