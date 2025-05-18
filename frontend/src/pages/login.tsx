@@ -1,6 +1,7 @@
+// src/pages/Login.tsx
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import './Login.css';
 
@@ -9,51 +10,101 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
+    // Valores por defecto para demo
     setEmail('juanito@mock.com');
     setPassword('123456');
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(email, password);
-    navigate('/dashboard');
+    setLoading(true);
+    setError('');
+    try {
+      await login(email, password, remember);
+      navigate('/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Credenciales inválidas');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
-      <main className="login">
-        <form className="login__form" onSubmit={handleLogin}>
-          <h2 className="login__title">Iniciar sesión</h2>
+      <div className="login-header">
+        <h2>Bienvenido a Sales Predictor</h2>
+      </div>
 
-          <div className="login__group">
-            <label className="login__label">Correo electrónico</label>
+      <main className="login-page">
+        <form className="login-card" onSubmit={handleLogin}>
+          <h3 className="login-title">Iniciar sesión</h3>
+
+          {error && <p className="login-error">{error}</p>}
+
+          <div className="login-group">
+            <label htmlFor="email">Correo electrónico</label>
             <input
+              id="email"
               type="email"
-              className="login__input"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
+              placeholder="tú@ejemplo.com"
             />
           </div>
 
-          <div className="login__group">
-            <label className="login__label">Contraseña</label>
-            <input
-              type="password"
-              className="login__input"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-            />
+          <div className="login-group login-password">
+            <label htmlFor="password">Contraseña</label>
+            <div className="password-wrapper">
+              <input
+                id="password"
+                type={showPass ? 'text' : 'password'}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                className="pass-toggle"
+                onClick={() => setShowPass(v => !v)}
+                aria-label="Mostrar contraseña"
+              >
+                {showPass ? '🙈' : '👁️'}
+              </button>
+            </div>
           </div>
 
-          <button type="submit" className="login__button">
-            Entrar
+          <div className="login-options">
+            <label>
+              <input
+                type="checkbox"
+                checked={remember}
+                onChange={e => setRemember(e.target.checked)}
+              />
+              Recuérdame
+            </label>
+            <Link to="/forgot" className="login-forgot">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn--primario login-button"
+            disabled={loading}
+          >
+            {loading ? 'Verificando…' : 'Entrar'}
           </button>
         </form>
       </main>
+
       <Footer />
     </>
   );

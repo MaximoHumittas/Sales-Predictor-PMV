@@ -1,0 +1,36 @@
+/* src/components/Card.css */
+.card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: relative;
+  }
+  .card img {
+    width: 100%;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  .badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: #00a1e0;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .card h3 {
+    margin: 1rem 0 0.5rem;
+    color: #002d5c;
+    font-size: 1.1rem;
+  }
+  .card a {
+    color: #0065ff;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  

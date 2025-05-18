@@ -1,37 +1,21 @@
+// src/components/Card.tsx
 import React from 'react';
-import './components.css';
-import { Link } from 'react-router-dom';
+import './Card.css';
 
-export interface CardProps {
-  imageUrl: string;
-  title: string;
-  text: string;
-  buttonText?: string;
-  buttonLink?: string;
-  onButtonClick?: () => void;
+interface CardProps {
+  tipo: string;
+  titulo: string;
+  linkText: string;
+  linkUrl: string;
+  imgSrc: string;
 }
 
-const Card: React.FC<CardProps> = ({
-  imageUrl,
-  title,
-  text,
-  buttonText,
-  buttonLink,
-  onButtonClick
-}) => (
+const Card: React.FC<CardProps> = ({ tipo, titulo, linkText, linkUrl, imgSrc }) => (
   <div className="card">
-    <img src={imageUrl} alt={title} className="card__image" />
-    <div className="card__body">
-      <h3 className="card__title">{title}</h3>
-      <p className="card__text">{text}</p>
-      {buttonText && (
-        buttonLink ? (
-          <Link to={buttonLink} className="card__button">{buttonText}</Link>
-        ) : (
-          <button className="card__button" onClick={onButtonClick}>{buttonText}</button>
-        )
-      )}
-    </div>
+    <img src={imgSrc} alt={titulo} />
+    <span className="badge">{tipo}</span>
+    <h3>{titulo}</h3>
+    <a href={linkUrl}>{linkText}</a>
   </div>
 );
 

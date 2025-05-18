@@ -1,45 +1,65 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+// src/components/Navbar.tsx
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import './components.css';
+import './Navbar.css';
+
 const Navbar: React.FC = () => {
-
   const { user, logout } = useAuth();
+  const { pathname } = useLocation();
+  const [open, setOpen] = useState(false);
 
+  const toggleMenu = () => setOpen(o => !o);
+  const closeMenu = () => setOpen(false);
+
+  const navItems = user
+    ? [
+        { to: '/', label: 'Inicio' },
+        { to: '/dashboard', label: 'Panel de control' },
+        { to: '/about', label: 'Sobre nosotros' },
+        { to: '/profile', label: 'Usuario' },
+      ]
+    : [{ to: '/login', label: 'Login' }];
 
   return (
-
     <nav className="navbar">
       <div className="navbar__brand">
         <h1>Sales Predictor</h1>
       </div>
-      <ul className="navbar__menu">
-        <li className="navbar__item">
-          <Link to="/" className="navbar__link">Inicio</Link>
-        </li>
-        {user ? (
-          <>
-            <li className="navbar__item">
-              <Link to="/dashboard" className="navbar__link">Panel de control</Link>
-            </li>
-            <li className="navbar__item">
-              <Link to="/about" className="navbar__link">Sobre nosotros</Link>
-            </li>
-            <li className="navbar__item">
-              <Link to="/profile" className="navbar__link">Usuario</Link>
-            </li>
-            <li className="navbar__item">
-              <button onClick={logout} className="navbar__button">Cerrar sesión</button>
-            </li>
-          </>
-        ) : (
+
+      {/* botón hamburger */}
+      <button
+        className={`navbar__toggle ${open ? 'is-active' : ''}`}
+        onClick={toggleMenu}
+        aria-label="Menú"
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+
+      <ul className={`navbar__menu ${open ? 'navbar__menu--open' : ''}`}>
+        {navItems.map((item) => (
+          <li className="navbar__item" key={item.to}>
+            <Link
+              to={item.to}
+              className={`navbar__link ${pathname === item.to ? 'is-active' : ''}`}
+              onClick={closeMenu}
+            >
+              {item.label}
+            </Link>
+          </li>
+        ))}
+
+        {user && (
           <li className="navbar__item">
-            <Link to="/login" className="navbar__link">Login</Link>
+            <button onClick={() => { logout(); closeMenu(); }} className="navbar__button">
+              Cerrar sesión
+            </button>
           </li>
         )}
       </ul>
     </nav>
-
   );
 };
 

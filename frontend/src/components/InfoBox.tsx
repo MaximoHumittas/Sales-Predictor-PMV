@@ -1,18 +1,19 @@
-import React from 'react';
-import './components.css';
+// src/components/InfoBox.tsx
+import React, { ReactNode } from 'react';
+import './components.css'; // aquí están tus estilos .info-box
 
-export interface InfoBoxProps {
-  icon: React.ReactNode;
+interface InfoBoxProps {
+  icon: ReactNode;
   label: string;
-  value: string | number;
+  value: string;
 }
 
 const InfoBox: React.FC<InfoBoxProps> = ({ icon, label, value }) => (
   <div className="info-box">
     <div className="info-box__icon">{icon}</div>
     <div className="info-box__content">
-      <span className="info-box__label">{label}</span>
-      <span className="info-box__value">{value}</span>
+      <div className="info-box__label">{label}</div>
+      <div className="info-box__value">{value}</div>
     </div>
   </div>
 );
