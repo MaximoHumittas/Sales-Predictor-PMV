@@ -4,29 +4,42 @@ import Footer from '../components/Footer';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
-  const [mensaje, setMensaje] = useState<string>('');
+  const [imgUrl, setImgUrl] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
-  const handleClick = async () => {
+  const handleMostrarGrafica = async () => {
     try {
-      // Usamos la variable de entorno de Vite
       const baseURL = import.meta.env.VITE_API_URL;
-      const resp = await axios.get<string>(`${baseURL}/`);
-      setMensaje(resp.data);
+      const resp = await axios.post(
+        `${baseURL}/plot`,
+        { features: [120, 200, 150, 300], producto: 'MiProducto' },
+        { responseType: 'blob' }
+      );
+      // Crear URL para el blob recibido
+      const url = URL.createObjectURL(resp.data);
+      setImgUrl(url);
+      setError('');
     } catch (err) {
       console.error(err);
-      setMensaje('Error al conectar con el servidor');
+      setError('Error al obtener la gráfica');
     }
   };
 
   return (
     <>
       <h1>Dashboard</h1>
-      <button onClick={handleClick}>Probar conexión</button>
 
-      {mensaje && (
-        <div className="response">
-          <strong>Respuesta del backend:</strong>
-          <p>{mensaje}</p>
+      <button onClick={handleMostrarGrafica}>
+        Obtener gráfica del backend
+      </button>
+
+      {error && <p className="error">{error}</p>}
+
+      {imgUrl && (
+        <div className="imagen-container">
+          <strong>Gráfica recibida:</strong>
+          <br />
+          <img src={imgUrl} alt="Gráfica de ventas" />
         </div>
       )}
 

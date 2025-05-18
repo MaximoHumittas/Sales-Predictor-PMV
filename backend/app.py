@@ -11,7 +11,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-
 @app.route('/')
 def home():
     return "Servidor Flask operativo."
@@ -66,5 +65,5 @@ def plot():
     return send_file(buf, mimetype='image/png')
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Usa el puerto de Render o 5000 por defecto
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
