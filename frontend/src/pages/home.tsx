@@ -6,7 +6,6 @@ import Card from '../components/Card';
 import fotoPred1 from '../assets/fotoIA1.jpg';
 import fotoPred2 from '../assets/fotoIA7.jpg';
 import fotoPred3 from '../assets/fotoIA9.jpg';
-import fotoPred4 from '../assets/fotoIA10.jpg';
 import video from '../assets/video.mp4';
 
 
