@@ -26,7 +26,7 @@ const Login: React.FC = () => {
     setLoading(true);
     setError('');
     try {
-      await login(email, password, remember);
+      await login(email, password); // <--- corregido
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Credenciales inválidas');

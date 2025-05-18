@@ -8,9 +8,9 @@ import fotoPred2 from '../assets/fotoIA7.jpg';
 import fotoPred3 from '../assets/fotoIA9.jpg';
 import video from '../assets/video.mp4';
 
-
 import foto1 from '../assets/foto1.jpg';
 import foto2 from '../assets/foto2.jpeg';
+
 const features = [
   {
     tipo: 'Artículo',
@@ -51,21 +51,16 @@ const products = [
   {
     titulo: 'Analistas de datos',
     descripcion: 'Integra análisis predictivo a tu flujo de trabajo con herramientas conocidas.',
-
     imgSrc: fotoPred2
   },
   {
     titulo: 'Consultores de negocio',
     descripcion: 'Entrega reportes predictivos a tus clientes en minutos.',
-
-
     imgSrc: fotoPred3
   },
   {
     titulo: 'Explora SalesPredictor',
     descripcion: 'Conoce todas las funcionalidades del sistema PMN y su potencial.',
-
- 
     imgSrc: foto2
   }
 ];
@@ -107,9 +102,9 @@ const Home: React.FC = () => {
               key={i}
               tipo={f.tipo}
               titulo={f.titulo}
-  
-      
               imgSrc={f.imgSrc}
+              linkText={f.linkText}
+              linkUrl={f.linkUrl}
             />
           ))}
         </div>
@@ -124,7 +119,7 @@ const Home: React.FC = () => {
               <img src={p.imgSrc} alt={p.titulo} />
               <h3>{p.titulo}</h3>
               <p>{p.descripcion}</p>
-              <a href={p.linkUrl}>{p.linkText}</a>
+              {/* Si quieres agregar un botón, puedes hacerlo aquí */}
             </div>
           ))}
         </div>
