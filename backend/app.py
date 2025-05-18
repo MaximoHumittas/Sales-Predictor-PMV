@@ -3,7 +3,7 @@ import os
 import io
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')  # usa backend sin GUI
+matplotlib.use('Agg')  # Usa backend sin GUI para evitar errores
 import matplotlib.pyplot as plt
 from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
@@ -15,38 +15,45 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def home():
     return "Servidor Flask operativo."
 
-@app.route('/prediccion-mayo', methods=['POST'])
-def prediccion_mayo():
+@app.route('/prediccion-junio', methods=['GET'])
+def prediccion_junio():
+    dias = list(range(1, 31))
+    predicciones = np.random.uniform(100, 500, size=30).round(2).tolist()
+    return jsonify({'dias': dias, 'predicciones': predicciones})
+
+@app.route('/prediccion-mensual', methods=['GET'])
+def prediccion_mensual():
+    mes = request.args.get('mes', '').lower()
+    meses_validos = ['junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+
+    if mes not in meses_validos:
+        return jsonify({'error': 'Mes inválido. Usa: junio, julio, ..., diciembre'}), 400
+
+    dias = list(range(1, 31))
+    predicciones = np.random.uniform(100, 500, size=30).round(2).tolist()
+    return jsonify({'mes': mes.capitalize(), 'dias': dias, 'predicciones': predicciones})
+
+@app.route('/plot', methods=['POST'])
+def plot():
     data = request.get_json()
-    ventas = data.get('ventas')       # debe ser lista de 3 números
-    precio = data.get('precio')       # número (USD)
+    features = data.get('features')
     producto = data.get('producto', 'Producto')
 
-    # Validaciones
-    if not isinstance(ventas, list) or len(ventas) != 3:
-        return jsonify({'error': 'Envía "ventas": [feb, mar, abr] (3 valores)'}), 400
-    if not all(isinstance(v, (int, float)) for v in ventas):
-        return jsonify({'error': 'Todos los valores de "ventas" deben ser numéricos'}), 400
-    if not isinstance(precio, (int, float)):
-        return jsonify({'error': 'Envía "precio" como número'}), 400
+    # Validación de entrada
+    if features is None or not isinstance(features, list):
+        return jsonify({'error': 'Debe enviar un JSON con "features": [num, …]'}), 400
+    if not all(isinstance(f, (int, float)) for f in features):
+        return jsonify({'error': 'Todos los elementos de "features" deben ser números'}), 400
 
-    # Regresión lineal simple: x=[2,3,4] → feb=2, mar=3, abr=4
-    x = np.array([2, 3, 4])
-    y = np.array(ventas)
-    m, b = np.polyfit(x, y, 1)          # pendiente y ordenada
-    pred_may = float(m * 5 + b)        # x=5 para mayo
-
-    # Preparamos la gráfica
-    meses_num = [1, 2, 3, 4]           # posiciones para Febrero→1 … Mayo→4
-    meses_lbl = ['Febrero', 'Marzo', 'Abril', 'Mayo']
-    valores = [ventas[0], ventas[1], ventas[2], pred_may]
+    # Crear gráfica
+    x = list(range(1, len(features) + 1))
+    y = features
 
     fig, ax = plt.subplots()
-    ax.plot(meses_num, valores, marker='o')
-    ax.set_xticks(meses_num)
-    ax.set_xticklabels(meses_lbl)
-    ax.set_title(f'Ventas y predicción Mayo: {pred_may:.2f} unidades a ${precio:.2f}')
-    ax.set_ylabel('Unidades vendidas')
+    ax.plot(x, y, marker='o')
+    ax.set_title(f'Gráfica de ventas: {producto}')
+    ax.set_xlabel('Días')
+    ax.set_ylabel('Valor en dólares')
     ax.grid(True)
 
     buf = io.BytesIO()
@@ -58,6 +65,5 @@ def prediccion_mayo():
     return send_file(buf, mimetype='image/png')
 
 if __name__ == '__main__':
-    # instala dependencias: *pip install flask flask_cors numpy matplotlib*
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
