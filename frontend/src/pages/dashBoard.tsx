@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaChartLine, FaDollarSign } from 'react-icons/fa';
-import Footer from '../components/Footer';
 import InfoBox from '../components/InfoBox';
 import './Dashboard.css';
 
